@@ -1,6 +1,9 @@
 import streamlit as st
 import json
 import time
+from dotenv import load_dotenv
+
+load_dotenv()
 from database_helper import get_db_metadata
 from ai_engine import get_ai_business_context, get_sql_help
 
