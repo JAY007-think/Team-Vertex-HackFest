@@ -134,5 +134,19 @@ if 'data' in st.session_state:
 
 else:
     # Welcome Screen
-    st.info("👈 Please initialize the scan from the sidebar to start analyzing the Olist E-Commerce dataset.")
-    st.image("https://i.imgur.com/7SjS1GZ.png", caption="Vertex AI Architecture: From Raw Metadata to Business Insights")
+    # Image ki jagah ye professional info box daal do
+    st.subheader("📊 Dataset Overview: Olist E-Commerce")
+    st.markdown("""
+    Vertex is currently analyzing the **Brazilian E-Commerce Public Dataset** by Olist. 
+    This is a real-world, anonymized dataset of 100k orders from 2016 to 2018.
+    """)
+
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        st.info("**100K+** \n\n Total Orders")
+    with col_b:
+        st.info("**9 Tables** \n\n Relational Schema")
+    with col_c:
+        st.info("**1M+** \n\n Geolocation Points")
+
+    st.warning("⚡ **Tip:** Click on 'Initialize Scan' in the sidebar to generate the live relationship map below.")
