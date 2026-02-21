@@ -1,6 +1,16 @@
-import google.generativeai as genai
+import vertexai
+from vertexai.generative_models import GenerativeModel
 
-genai.configure(api_key="AIzaSyDcc3doyKTIMOoXS7RJjCbki-fol7dJYTA")
+# 1. Pehle initialize karein (Project ID aur Region ke saath)
+# Project ID aapko Google Cloud Console ke dashboard par milega
+vertexai.init(project="YOUR_PROJECT_ID_HERE", location="us-central1")
 
-for m in genai.list_models():
-    print(m.name, m.supported_generation_methods)
+# 2. Sahi model name use karein (1.5-flash fast aur reliable hai)
+model = GenerativeModel("gemini-1.5-flash")
+
+# 3. Content generate karein
+try:
+    response = model.generate_content("Hello from Vertex AI!")
+    print(response.text)
+except Exception as e:
+    print(f"Error: {e}")

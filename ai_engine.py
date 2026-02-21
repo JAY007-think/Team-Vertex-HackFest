@@ -1,63 +1,69 @@
 import google.generativeai as genai
 import os
+from dotenv import load_dotenv
+import PIL.Image # Image processing ke liye
 
-# API Key setup
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=GEMINI_API_KEY)
+load_dotenv()
 
-# Using Gemini 1.5 Flash for high-speed metadata enrichment
-model = genai.GenerativeModel("gemini-1.5-flash")
+# Step 1: API Configuration
+API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=API_KEY)
+
+# Model Initialization
+# Gemini 1.5 Flash is mandatory for Vision/Images
+try:
+    model = genai.GenerativeModel('gemini-2.5-flash')
+except:
+    model = genai.GenerativeModel('gemini-pro')
+
+# --- New Functions for Round 2 ---
+
+def analyze_image(uploaded_file):
+    """Processes ER-Diagrams or Schema screenshots using Vision"""
+    try:
+        img = PIL.Image.open(uploaded_file)
+        prompt = """
+        Analyze this image of a database schema or ER diagram.
+        1. List all tables identified.
+        2. Identify primary and foreign key relationships.
+        3. Provide a brief business summary of what this database manages.
+        """
+        response = model.generate_content([prompt, img])
+        return response.text
+    except Exception as e:
+        return f"Vision Error: {str(e)}"
+
+def analyze_url(url):
+    """Extracts business context from a provided documentation URL"""
+    try:
+        # Simple RAG prompt: In a real app, you'd scrape the URL first. 
+        # Here we ask Gemini to use its internal knowledge about the URL if public.
+        prompt = f"""
+        Analyze the documentation at this URL: {url}
+        Extract the core business objectives, data entities, and potential stakeholders.
+        Focus on how it relates to the Olist E-commerce ecosystem.
+        """
+        response = model.generate_content(prompt)
+        return response.text
+    except Exception as e:
+        return f"URL Analysis Error: {str(e)}"
+
+# --- Existing Functions ---
 
 def get_ai_business_context(table_metadata):
-    """
-    Translates technical Olist schema into business-friendly insights.
-    Uses Statistical metrics (Mean/Std Dev) to provide deeper context.
-    """
+    """Translates technical schema into business insights"""
     try:
-        # Vertex System Prompt for Olist Dataset
-        prompt = f"""
-        You are a Senior Data Architect at an E-commerce firm. 
-        Analyze this table metadata from the 'Brazilian E-Commerce (Olist)' dataset.
-        
-        Metadata: {table_metadata}
-        
-        Provide the following in a structured format:
-        1. **Business Purpose**: A 2-line summary of what this table represents in the e-commerce lifecycle.
-        2. **Stakeholders**: Who (e.g., Marketing, Logistics, Finance) would use this data.
-        3. **Statistical Insight**: Interpret the provided Mean and Std Dev metrics (if available).
-        4. **Data Risk**: One potential business risk (e.g., 'Null review scores might hide customer dissatisfaction').
-        
-        Keep it professional and crisp for a dashboard view.
-        """
-
+        prompt = f"Analyze this Olist metadata: {table_metadata}. Give Business Purpose, Stakeholders, and interpret Mean ($\mu$) and Std Dev ($\sigma$)."
         response = model.generate_content(prompt)
         return response.text
-
     except Exception as e:
-        return f"Vertex AI Error: {str(e)}"
-
+        return f"Context Error: {str(e)}"
 
 def get_sql_help(user_question, schema_context):
-    """
-    RAG-based SQL Assistant specialized in Olist multi-table joins.
-    """
+    """Specialized SQL Assistant for Olist"""
     try:
-        prompt = f"""
-        You are Vertex AI, an expert SQL Assistant for the Olist E-commerce database.
-        
-        Context (All Tables & Columns): {schema_context}
-        
-        User Question: {user_question}
-
-        Instructions:
-        - Provide accurate SQL for SQLite/PostgreSQL.
-        - Use JOINs where necessary (e.g., link 'orders' to 'customers' using 'customer_id').
-        - Explain the logic in 2 simple sentences.
-        - If the question is not about the data, politely ask to stay on topic.
-        """
-
+        prompt = f"Context: {schema_context}. Question: {user_question}. Output valid SQL and logic."
         response = model.generate_content(prompt)
         return response.text
-
     except Exception as e:
-        return f"Vertex AI Error: {str(e)}"
+        return f"SQL Error: {str(e)}"
