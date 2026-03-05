@@ -45,6 +45,7 @@ The system follows a modular pipeline from ingestion to actionable insights:
 ├── olist_ecommerce.db   # Processed SQLite Database
 ├── setup_db.py          # Database initialization script
 └── README.md            # Documentation
+```
 
 ---
 
