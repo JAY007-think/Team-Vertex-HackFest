@@ -51,22 +51,22 @@ The system follows a modular pipeline from ingestion to actionable insights:
 ## ⚙️ Installation & Setup
 
 1. Clone the repo:
-    git clone https://github.com/JAY007-think/Vertex_HackFest.git
-    cd Vertex_HackFest
+    * git clone https://github.com/JAY007-think/Vertex_HackFest.git
+    * cd Vertex_HackFest
 2. Install dependencies:
-    pip install -r requirements.txt
+    * pip install -r requirements.txt
 3. Set up environment variables:
-    Create a .env file and add your Gemini API Key:
-    GEMINI_API_KEY=your_api_key_here
+    * Create a .env file and add your Gemini API Key:
+    * GEMINI_API_KEY=your_api_key_here
 4. Run the App:
-    streamlit run app.py
+    * streamlit run app.py
 
 ---
 
 ## 👥 The Dream Team (Team Vertex)
-Jay Soni - Project Lead & AI Engineer
-Mohit Goswami - Fronted Developer
-Team Member 2 - Data Engineer 
+1. Jay Soni - Project Lead & AI Engineer
+2. Mohit Goswami - Fronted Developer
+3. Pawan Prajapat - Data Engineer 
 
 ---
 
@@ -77,8 +77,8 @@ Developed at HackFest 2.0 2026 organized by GDG Cloud New Delhi and Turgon AI.
 
 👨‍💻 Author
 
-Jay Soni
-LinkedIn: https://www.linkedin.com/in/jay-soni-01a791261/
-LeetCode: https://leetcode.com/u/ZysIunJ150/
+* Jay Soni
+* LinkedIn: https://www.linkedin.com/in/jay-soni-01a791261/
+* LeetCode: https://leetcode.com/u/ZysIunJ150/
 
 > This project was built as a learning exercise and enhanced with additional features.
